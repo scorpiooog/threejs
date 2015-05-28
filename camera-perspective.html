@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" >
+	<title>正交投影摄像机</title>
+</head>
+<body onload="init()">
+	<canvas id="canvas" width="400" height="300" style="width:400px; height:300px;"></canvas>
+
+<script type="text/javascript" src="/js/three.js"></script>
+<script type="text/javascript">
+	var three = THREE;
+	function init () {
+		//初始化渲染器
+		var render = new three.WebGLRenderer({
+			canvas:document.getElementById('canvas')
+		});
+		
+		render.setClearColor(0x000000);
+
+		//初始化场景，里面放相机和物体
+		var scene = new three.Scene();
+
+		/*
+			PerspectiveCamera(fov,aspect,near,far);
+			fov:张角、aspect：宽高比(一般设置为canvas宽高比)
+			初始化相机 并 设置照相机的位置
+		*/
+		var camera = new three.PerspectiveCamera(40,4/3,1,20);
+		camera.position.set(0,0,4);
+		// camera.position.set(2,-3,2);
+		camera.lookAt(new three.Vector3(0,0,0));
+		scene.add(camera);
+
+		//初始化物体
+		var cube = new three.Mesh(
+			new three.BoxGeometry(1,1,1),
+			new three.MeshBasicMaterial({
+					color:0x00ff00,
+					wireframe:true	//是否是只有边框
+				}));
+		scene.add(cube);
+
+		render.render(scene,camera);
+	}
+
+</script>
+</body>
+</html>

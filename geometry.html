@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" >
+	<title>基本几何图形</title>
+</head>
+<body onload="init()">
+	<canvas id="canvas" width="400" height="300" style="width:400px; height:300px;"></canvas>
+	<div>
+		<input type="button" value="立方体" onclick="boxGeometry()">
+		<input type="button" value="平面" onclick="planeGeometry()">
+		<input type="button" value="球体" onclick="sphereGeometry()">
+		<input type="button" value="半球体" onclick="sphereGeometry1()">
+		<input type="button" value="圆" onclick="circleGeometry()">
+		<input type="button" value="扇" onclick="circleGeometry1()">
+		<input type="button" value="圆柱" onclick="cylinderGeometry()">
+		<input type="button" value="正四面体" onclick="tetrahedronGeometry()">
+		<input type="button" value="正八面体" onclick="octahedronGeometry()">
+		<input type="button" value="正二十面体" onclick="icosahedronGeometry()">
+		<input type="button" value="圆环(甜甜圈)" onclick="torusGeometry()">
+		<input type="button" value="圆环结" onclick="torusKnotGeometry()">
+		<input type="button" value="自定义" onclick="customGeometry()">
+		
+	</div>
+
+<script type="text/javascript" src="/js/three.js"></script>
+<script type="text/javascript">
+var three=THREE;
+var render,	scene,	camera;
+
+function init(){
+	render = new three.WebGLRenderer({canvas:document.getElementById('canvas')});
+	scene = new three.Scene();
+	camera = new three.OrthographicCamera(-2,2,-1.5,1.5,1,15);
+	// camera.position.set(0,0,5);
+	camera.position.set(2,-3,5);
+	camera.lookAt(new three.Vector3(0,0,0));
+}
+
+//立方体
+function boxGeometry() {
+	render.setClearColor(0x000000);
+	scene.add(camera);
+
+	// BoxGeometry构造函数：BoxGeometry(width,height,depth,widthSegments,heihtSegments,depthSegments)
+	//参数含义：x方向的长度，y方向的长度，z方向的长度；后三个分别表示在三个方向上的分段数(widthSegments:2表示在x方向分两段。default value 1);
+	var box = new three.Mesh(
+		new three.BoxGeometry(1,1,1,2,2,2),
+		new three.MeshBasicMaterial({
+			color:0xffffff,
+			wireframe:true
+		}));
+	scene.add(box);
+	render.render(scene,camera);
+}
+
+//平面
+function planeGeometry(){
+	render.setClearColor(0x000000);
+	scene.add(camera);
+	// PlaneGeometry(width,height,widthSegments,heightSegments) 参数含义和boxGeometry一样
+	// 创建的平面在x和y所在平面，通过物体的旋转实现到其他平面
+	var plane = new three.Mesh(
+		new three.PlaneGeometry(2,3,2,2),
+		new three.MeshBasicMaterial({
+			color:0xff0000,
+			wireframe:true
+		}));
+	scene.add(plane);
+	render.render(scene,camera);
+}
+
+//球体
+function sphereGeometry(){
+	// camera.position.set(0,0,2);
+	render.setClearColor(0x000000);
+	scene.add(camera);
+	// sphere(radious,segmentsWidth,segmentsHeight,phiStart,phiLength,thetaStart,thetaLength)
+	// 参数含义：半径，经度上的切片数，纬度上的切片数，经度开始的弧度，经度跨过的弧度，纬度开始的弧度，纬度跨过的弧度
+	var plane = new three.Mesh(
+		new three.SphereGeometry(1.3,18,12),
+		new three.MeshBasicMaterial({
+			color:0xff0000,
+			wireframe:true
+		}));
+	scene.add(plane);
+	render.render(scene,camera);
+}
+
+//半球
+function sphereGeometry1() {
+	render.setClearColor(0x000000);
+	scene.add(camera);
+	var sphere = new three.Mesh(
+		new three.SphereGeometry(1.2,10,12,Math.PI/3,Math.PI/2,Math.PI/4,Math.PI/2),
+		new three.MeshBasicMaterial({
+		color:0x0000ff,
+		wireframe:true
+	}));
+	scene.add(sphere);
+	render.render(scene,camera);
+}
+
+//圆
+function circleGeometry () {
+	render.setClearColor(0x000000);
+	scene.add(camera);
+
+	//CircleGeometry(radius,segments,thetaStart,thetaLength)
+	//参数含义:半径，分几片，从哪开始，跨度
+	var circle = new three.Mesh(
+		new three.CircleGeometry(1.5,50),
+		new three.MeshBasicMaterial({
+			color:0x0000ff,
+			wireframe:true
+		}));
+	scene.add(circle);
+	render.render(scene,camera);
+}
+
+//扇
+function circleGeometry1 () {
+	render.setClearColor(0x000000);
+	scene.add(camera);
+
+	var circle = new three.Mesh(
+		new three.CircleGeometry(1.5,50,Math.PI/4,Math.PI/2),
+		new three.MeshBasicMaterial({
+			color:0x0000ff,
+			wireframe:true
+		}));
+	scene.add(circle);
+	render.render(scene,camera);
+}
+
+//圆柱
+function cylinderGeometry () {
+	render.setClearColor(0x000000);
+	scene.add(camera);
+
+	// CylinderGeometry(radiusTop,radiusBottom,height,radiusSegments,heightSegments,openEnded);
+	// 参数含义:上圆半径，下圆半径，高，圆分几片，高分几片，是否有顶/底 面 默认false
+	var cylinder = new three.Mesh(new three.CylinderGeometry(1,1,1.5,50,5,false),
+		new three.MeshBasicMaterial({color:0x0000ff,wireframe:true}));
+	scene.add(cylinder);
+	render.render(scene,camera);
+}
+
+//正四面体
+function tetrahedronGeometry () {
+	render.setClearColor(0x000000);
+	camera.position.set(2,2,10);
+	camera.lookAt(new three.Vector3(0,0,0));
+
+	scene.add(camera);
+	//TetrahedronGeometry(radius,detail);
+	//参数含义：半径，细节层次的层数(默认0，一般省略)
+	var tetrahedron = new three.Mesh(new three.TetrahedronGeometry(1,0),new three.MeshBasicMaterial({color:0x0000ff,wireframe:true}));
+	scene.add(tetrahedron);
+	render.render(scene,camera);
+}
+
+//正八面体
+function octahedronGeometry() {
+	render.setClearColor(0x000000);
+	camera.position.set(2,2,10);
+	camera.lookAt(new three.Vector3(0,0,0));
+
+	scene.add(camera);
+	//OctahedronGeometry(radius,detail);
+	//参数含义：半径，细节层次的层数(默认0，一般省略)
+	var tetrahedron = new three.Mesh(new three.OctahedronGeometry(1,0),new three.MeshBasicMaterial({color:0x0000ff,wireframe:true}));
+	scene.add(tetrahedron);
+	render.render(scene,camera);
+}
+
+//正二十面体
+function icosahedronGeometry() {
+	render.setClearColor(0x000000);
+	camera.position.set(2,2,10);
+	camera.lookAt(new three.Vector3(0,0,0));
+
+	scene.add(camera);
+	//IcosahedronGeometry(radius,detail);
+	//参数含义：半径，细节层次的层数(默认0，一般省略)
+	var tetrahedron = new three.Mesh(new three.IcosahedronGeometry(1,0),new three.MeshBasicMaterial({color:0x0000ff,wireframe:true}));
+	scene.add(tetrahedron);
+	render.render(scene,camera);
+}
+
+//圆环面-甜甜圈
+function torusGeometry () {
+	render.setClearColor(0x000000);
+	scene.add(camera);
+
+	//TorusGeometry(radius,tube,radialSegments,tubularSegments,arc);
+	//参数含义：圆环半径，管道半径，圆环分片数，管道分片数，圆环面的弧度 默认 math.pi*2
+	var torus = new three.Mesh(new three.TorusGeometry(1,0.3,20,20,Math.PI),new three.MeshBasicMaterial({
+		color:0x0000ff,
+		wireframe:true
+	}));
+	scene.add(torus);
+	render.render(scene,camera);
+}
+
+//圆环结
+function torusKnotGeometry () {
+	render.setClearColor(0x000000);
+	scene.add(camera);
+
+	//TorusKnotGeometry(radius,tube,radialSegments,tubularSegments,p,q,heightScale);
+	//参数含义：圆环半径，管道半径，圆环分片数，管道分片数，p,q,z轴上的缩放
+	var torus = new three.Mesh(new three.TorusKnotGeometry(1,0.3,20,10,2,2,1),new three.MeshBasicMaterial({
+		color:0x0000ff,
+		wireframe:true
+	}));
+	scene.add(torus);
+	render.render(scene,camera);
+}
+
+//自定义
+function customGeometry () {
+	render.setClearColor(0x000000);
+	camera.position.set(1,-3,10);
+	camera.lookAt(new three.Vector3(0,0,0));
+	scene.add(camera);
+
+	//初始化几何形状
+	var geometry = new three.Geometry();
+	//设置顶点
+	geometry.vertices.push(new three.Vector3(-0.5,1,-0.5));
+	geometry.vertices.push(new three.Vector3(0.5,1.-0.5));
+	geometry.vertices.push(new three.Vector3(0.5,1,0.5));
+	geometry.vertices.push(new three.Vector3(0,0,0));
+
+	//设置连线
+	geometry.faces.push(new three.Face3(0,1,2));
+	geometry.faces.push(new three.Face3(1,2,3));
+	geometry.faces.push(new three.Face3(1,0,3));
+	geometry.faces.push(new three.Face3(2,0,3));
+
+	var mesh = new three.Mesh(geometry,new three.MeshBasicMaterial({color:0x0000ff,wireframe:true}));
+
+	scene.add(mesh);
+	render.render(scene,camera);
+}
+</script>
+</body>
+</html>
