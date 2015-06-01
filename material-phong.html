@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>phong材质</title>
+	<style type="text/css">
+	body{margin: 0;}
+	canvas{
+		margin:auto;
+		display: block;
+	}
+	</style>
+</head>
+<body onload="init()">
+	<canvas id="canvas" width="400" height="300" style="width:400px; height:300px;"></canvas>
+
+<script type="text/javascript" src="/js/three.js"></script>
+<script type="text/javascript">
+var three = THREE,render,camera,scene;
+function init () {
+	render = new three.WebGLRenderer({canvas:document.getElementById('canvas')});
+	scene = new three.Scene();
+	camera = new three.OrthographicCamera(-2,2,-1.5,1.5,1,100);
+	camera.position.set(2,3,5);
+	camera.lookAt(new three.Vector3(0,0,0));
+	scene.add(camera);
+	render.setClearColor(0x000000);
+}
+
+function light () {
+	var light = new three.AmbientLight(0xcccccc);
+}
+
+</script>
+</body>
+</html>

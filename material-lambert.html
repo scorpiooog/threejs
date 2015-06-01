@@ -28,11 +28,12 @@ var three = THREE,render,scene,camera,box;
 
 		render.setClearColor(0x000000);
 
-		plane();
-		boxGeometry();
+		// plane();
+		boxGeometry1();
+		// ambientLight();
 		// pointLight();
 		// directionalLight();
-		spotLight();
+		// spotLight();
 		render.render(scene,camera);
 	}
 
@@ -46,8 +47,11 @@ var three = THREE,render,scene,camera,box;
 	//设置背景
 	function plane() {
 		//PlaneGeometry(width,height,widthSegments,heightSements);
-		var plane = new three.Mesh(new three.PlaneGeometry(2,2,2,2),new three.MeshLambertMaterial({color:0x00ff00}));
-		plane.rotation.set(0,-1.5,0)
+		var plane = new three.Mesh(new three.PlaneGeometry(3,5,1,1),new three.MeshLambertMaterial({color:0xffffff}));
+		plane.rotation.set(Math.PI/2,0,-Math.PI/8);
+		plane.position.y = -1;
+		plane.position.z = -2;
+		plane.position.x = -0.7;
 		// plane.rotation.x = -Math.PI / 2;
 		// plane.receiveShadow = true;
 		scene.add(plane);
@@ -74,17 +78,32 @@ var three = THREE,render,scene,camera,box;
 	//聚光灯
 	function spotLight () {
 		//SpotLight(hex,intensity,distance,angle,exponent)
-		var light = new three.SpotLight(0xffff00,2,40);
-		light.position.set(-1,-2,-4);
+		var light = new three.SpotLight(0xffff00,2,70,Math.PI/9,10);
+		light.position.set(-3.4,-8,-10);
 		light.target = box;
+		// spotLight.castShadow = true;
 
+		// spotLight.shadowMapWidth = 1024;
+		// spotLight.shadowMapHeight = 1024;
+
+		// spotLight.shadowCameraNear = 500;
+		// spotLight.shadowCameraFar = 4000;
+		// spotLight.shadowCameraFov = 30;
 		scene.add(light);
 		
 	}
 
 	function boxGeometry () {
-		box = new three.Mesh(new three.BoxGeometry(1,1,1),new three.MeshLambertMaterial({
-			 color: 0xff0000
+		box = new three.Mesh(new three.BoxGeometry(0.5,0.5,0.5),new three.MeshLambertMaterial({
+			 color: 0x00ff00
+		}));
+		scene.add(box);
+	}
+
+	//自发光
+	function boxGeometry1 () {
+		var box = new three.Mesh(new three.BoxGeometry(1,1,1),new three.MeshLambertMaterial({
+			emissive:0xff0000
 		}));
 		scene.add(box);
 	}
